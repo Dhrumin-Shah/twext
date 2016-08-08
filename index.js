@@ -2,23 +2,21 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser')
 var twilio = require('twilio');
-var client = require('twilio')('AC289d888c7c8c1c0d8906f73d92b35809', 'db49bbda72a0d53ede2061c3f0392713');
+var client = require('twilio')('<insert from twilio service (SID)>', '<insert from twilio service(AUTH token)>');
 var Twit = require('twit')
 
+//Twitter API stuff
+
 var T = new Twit({
-  consumer_key:         'eA3PH4FpiNx4taan3jyQgkOrx',
-  consumer_secret:      'mtpPcxL9Q1S3jPqn6rVkjduK0kK2Gz0uodx0hO41Vr5V1Kvhvd',
-  access_token:         '1572967369-dkJYNLGExYgD777RlN3sWZQKl0zX4qjJWwk5WyP',
-  access_token_secret:  'fy2DTVLWj7xvp0IwAYpK0aS7vwLH2zYfe5iSykP5pzUIi'
+  consumer_key:         '<insert from apps.twitter.com>',
+  consumer_secret:      '<insert from apps.twitter.com>',
+  access_token:         '<insert from apps.twitter.com>',
+  access_token_secret:  '<insert from apps.twitter.com>'
 })
 
-// function getTweets(hashtag) {
-//
-//  filter_stream = T.get('statuses/filter', { track: hashtag});
-// }
-
+//Body Parser for encoding url's to make the {searchitem} work
 app.use(bodyParser.urlencoded({extended: false}))
-
+// Some tests...
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -26,7 +24,7 @@ app.get('/', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
-
+//Make sure your twilio url for messages is set to {url}/sms
 app.post('/sms', function (req, res) {
 
   var resp = new twilio.TwimlResponse();
@@ -42,20 +40,14 @@ app.post('/sms', function (req, res) {
     T.get('search/tweets', { q: hash, count: 1 }, function(err, data, response) {
       console.log(data);
 
-    //  for (var i =0; i<=3; i++){
+   
       resp.message(data.statuses[0].text);
       res.send(resp.toString());
 
   })
 
   }
-  // resp.message("You Said: "+body);
-  //  console.log("something happened");
-  //  console.log("params",req.params);
-  //res.send(resp.toString());
+
 });
 
 
-//function handleResponse (resp, res) {
-
-//}
